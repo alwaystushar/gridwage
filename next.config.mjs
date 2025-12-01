@@ -1,7 +1,11 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  /* config options here */
   reactCompiler: true,
+
+  i18n: {
+    locales: ["en", "ar", "es"],
+    defaultLocale: "en"
+  }
 };
 
-export default nextConfig;
+module.exports = nextConfig;
