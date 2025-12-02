@@ -248,14 +248,13 @@ export default function Navbar() {
       /** HAMBURGER → X */
       const tlBurger = gsap.timeline({ defaults: { duration: 0.32, ease: easeSmooth } });
 
-      tlBurger
-        .to(burgerTop.current, { y: 7, rotate: 45 }, 0)
-        .to(burgerMid.current, { x: -8, y: 8, rotate: -45, scaleX: 0.4 }, 0)
-        .to(burgerBot.current, { y: -7, rotate: -45, scaleX: 1.5 }, 0)
+      if (burgerTop.current) tlBurger.to(burgerTop.current, { y: 7, rotate: 45 }, 0);
+      if (burgerMid.current) tlBurger.to(burgerMid.current, { x: -8, y: 8, rotate: -45, scaleX: 0.4 }, 0);
+      if (burgerBot.current) tlBurger.to(burgerBot.current, { y: -7, rotate: -45, scaleX: 1.5 }, 0);
 
-        .to(slideBurgerTop.current, { y: 7, rotate: 45 }, 0)
-        .to(slideBurgerMid.current, { x: -8, y: 8, rotate: -45, scaleX: 0.4 }, 0)
-        .to(slideBurgerBot.current, { y: -7, rotate: -45, scaleX: 1.5 }, 0);
+      if (slideBurgerTop.current) tlBurger.to(slideBurgerTop.current, { y: 7, rotate: 45 }, 0);
+      if (slideBurgerMid.current) tlBurger.to(slideBurgerMid.current, { x: -8, y: 8, rotate: -45, scaleX: 0.4 }, 0);
+      if (slideBurgerBot.current) tlBurger.to(slideBurgerBot.current, { y: -7, rotate: -45, scaleX: 1.5 }, 0);
 
       // Animate ordered nodes one-by-one (fade up) - START AFTER MENU FULLY OPENS
       if (orderedNodes.length) {
@@ -299,14 +298,13 @@ export default function Navbar() {
       /** X → HAMBURGER **/
       const tlBurger = gsap.timeline({ defaults: { duration: 0.32, ease: easeSmooth } });
 
-      tlBurger
-        .to(burgerTop.current, { y: 0, rotate: 0 }, 0)
-        .to(burgerMid.current, { x: 0, y: 0, rotate: 0, scaleX: 1 }, 0)
-        .to(burgerBot.current, { y: 0, rotate: 0, scaleX: 1 }, 0)
+      if (burgerTop.current) tlBurger.to(burgerTop.current, { y: 0, rotate: 0 }, 0);
+      if (burgerMid.current) tlBurger.to(burgerMid.current, { x: 0, y: 0, rotate: 0, scaleX: 1 }, 0);
+      if (burgerBot.current) tlBurger.to(burgerBot.current, { y: 0, rotate: 0, scaleX: 1 }, 0);
 
-        .to(slideBurgerTop.current, { y: 0, rotate: 0 }, 0)
-        .to(slideBurgerMid.current, { x: 0, y: 0, rotate: 0, scaleX: 1 }, 0)
-        .to(slideBurgerBot.current, { y: 0, rotate: 0, scaleX: 1 }, 0);
+      if (slideBurgerTop.current) tlBurger.to(slideBurgerTop.current, { y: 0, rotate: 0 }, 0);
+      if (slideBurgerMid.current) tlBurger.to(slideBurgerMid.current, { x: 0, y: 0, rotate: 0, scaleX: 1 }, 0);
+      if (slideBurgerBot.current) tlBurger.to(slideBurgerBot.current, { y: 0, rotate: 0, scaleX: 1 }, 0);
 
       document.body.style.overflow = "auto";
       setMobileDropdown(null);
