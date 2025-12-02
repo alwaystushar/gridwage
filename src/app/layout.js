@@ -13,10 +13,9 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html>
+    <html lang={lang} dir={lang === "ar" ? "rtl" : "ltr"}>
       <body>
         <LanguageProvider>
-          <Navbar />
           {children}
         </LanguageProvider>
       </body>

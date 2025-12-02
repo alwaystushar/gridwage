@@ -1,37 +1,33 @@
 "use client";
 
-import { createContext, useContext, useState, useEffect, useMemo } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import en from "./en.json";
 import ar from "./ar.json";
 import es from "./es.json";
 
 const languages = { en, ar, es };
-
-const LanguageContext = createContext({
-  lang: "en",
-  setLang: () => {},
-  t: en,
-});
+const LanguageContext = createContext();
 
 export function LanguageProvider({ children }) {
+  // 1) Read language from localStorage OR default to "en"
   const [lang, setLang] = useState("en");
 
-  // Load language from localStorage (safe for SSR)
+  // 2) Sync state with localStorage on first mount
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      const saved = window.localStorage.getItem("lang");
-      if (saved && languages[saved]) setLang(saved);
+    const saved = typeof window !== "undefined" ? localStorage.getItem("lang") : null;
+    if (saved && languages[saved]) {
+      setLang(saved);
     }
   }, []);
 
-  // Save language when it changes
+  // 3) Whenever language changes, store it
   useEffect(() => {
     if (typeof window !== "undefined") {
-      window.localStorage.setItem("lang", lang);
+      localStorage.setItem("lang", lang);
     }
   }, [lang]);
 
-  const t = useMemo(() => languages[lang] || languages.en, [lang]);
+  const t = languages[lang];
 
   return (
     <LanguageContext.Provider value={{ lang, setLang, t }}>
@@ -41,9 +37,5 @@ export function LanguageProvider({ children }) {
 }
 
 export function useLang() {
-  const context = useContext(LanguageContext);
-  if (!context) {
-    throw new Error("useLang must be used within a LanguageProvider");
-  }
-  return context;
+  return useContext(LanguageContext);
 }
