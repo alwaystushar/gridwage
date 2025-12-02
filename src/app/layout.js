@@ -1,6 +1,6 @@
 import "./globals.css";
-import Navbar from "../app/components/Navbar";
-import { LanguageProvider } from "../app/i18n/LanguageContext";
+import { LanguageProvider } from "./i18n/LanguageContext";
+import Navbar from "./components/Navbar";
 
 export const metadata = {
   title: "GridWage",
@@ -13,9 +13,10 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang={lang} dir={lang === "ar" ? "rtl" : "ltr"}>
+    <html suppressHydrationWarning>
       <body>
         <LanguageProvider>
+          <Navbar />
           {children}
         </LanguageProvider>
       </body>
