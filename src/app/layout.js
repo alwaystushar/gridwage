@@ -1,6 +1,7 @@
 import "./globals.css";
 import { LanguageProvider } from "./i18n/LanguageContext";
 import Navbar from "./components/Navbar";
+import LocaleStripper from "./LocaleStripper";
 
 export const metadata = {
   title: "GridWage",
@@ -16,8 +17,10 @@ export default function RootLayout({ children }) {
     <html suppressHydrationWarning>
       <body>
         <LanguageProvider>
-          <Navbar />
-          {children}
+          <LocaleStripper>
+            <Navbar />
+            {children}
+          </LocaleStripper>
         </LanguageProvider>
       </body>
     </html>
