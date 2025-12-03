@@ -2,8 +2,17 @@
 
 import Link from "next/link";
 import DirectionWrapper from "../DirectionWrapper";
+import { useLang } from "../i18n/LanguageContext";
+import en from "./i18n/en.json";
+import ar from "./i18n/ar.json";
+import es from "./i18n/es.json";
+
+const dictByLang = { en, ar, es };
 
 export default function DemoPage() {
+  const { lang } = useLang();
+  const t = dictByLang[lang] || dictByLang.en;
+
   return (
     <DirectionWrapper>
       <main className="pt-[8vw] pb-[6vw] px-[4vw] md:px-[12vw] bg-white text-[#111] min-h-screen">
@@ -12,11 +21,10 @@ export default function DemoPage() {
             Preview
           </p>
           <h1 className="text-4xl md:text-5xl font-semibold">
-            GridWage demo experience
+            {t.title}
           </h1>
           <p className="text-lg text-gray-600 leading-relaxed">
-            We are putting the finishing touches on our interactive product
-            walkthrough. In the meantime you can explore our{" "}
+            {t.body}{" "}
             <Link href="/product/eor" className="text-[#7b46ff] underline">
               product pages
             </Link>{" "}
@@ -26,8 +34,8 @@ export default function DemoPage() {
               className="text-[#7b46ff] underline"
             >
               contact us
-            </a>{" "}
-            for a guided session.
+            </a>
+            .
           </p>
         </section>
       </main>

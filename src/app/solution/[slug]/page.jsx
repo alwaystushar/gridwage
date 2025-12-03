@@ -1,7 +1,16 @@
-"use client";
+
 
 import { useMemo } from "react";
 import DirectionWrapper from "../../DirectionWrapper";
+
+// 🔥 REQUIRED FOR `output: export` — defines static slugs
+export async function generateStaticParams() {
+  return [
+    { slug: "hiring" },
+    { slug: "contractors" },
+    { slug: "relocation" },
+  ];
+}
 
 const solutionCopy = {
   hiring: {
@@ -77,4 +86,3 @@ export default function SolutionDetail({ params }) {
     </DirectionWrapper>
   );
 }
-

@@ -1,4 +1,12 @@
-"use client";
+
+
+export async function generateStaticParams() {
+  return [
+    { slug: "eor" },
+    { slug: "payroll" },
+    { slug: "compliance" },
+  ];
+}
 
 import { useMemo } from "react";
 import DirectionWrapper from "../../DirectionWrapper";
@@ -24,7 +32,9 @@ const productCopy = {
 
 export default function ProductDetail({ params }) {
   const details = useMemo(() => {
-    const fallbackName = params?.slug?.replace(/-/g, " ") ?? "Product";
+    const fallbackName =
+      params?.slug?.replace(/-/g, " ") ?? "Product";
+
     return (
       productCopy[params?.slug] ?? {
         title: fallbackName.replace(/\b\w/g, (c) => c.toUpperCase()),
@@ -41,10 +51,15 @@ export default function ProductDetail({ params }) {
           <p className="text-sm uppercase tracking-[0.4em] text-[#7b46ff]">
             Product Overview
           </p>
-          <h1 className="text-4xl md:text-5xl font-semibold">{details.title}</h1>
+
+          <h1 className="text-4xl md:text-5xl font-semibold">
+            {details.title}
+          </h1>
+
           <p className="text-lg text-gray-600 leading-relaxed">
             {details.summary}
           </p>
+
           <div className="flex flex-wrap gap-4 pt-2">
             <Link
               href="/demo"
@@ -52,6 +67,7 @@ export default function ProductDetail({ params }) {
             >
               Book a demo
             </Link>
+
             <a
               href="mailto:hello@gridwage.com"
               className="rounded-full border px-6 py-3 text-gray-900 font-medium"
@@ -64,4 +80,3 @@ export default function ProductDetail({ params }) {
     </DirectionWrapper>
   );
 }
-
