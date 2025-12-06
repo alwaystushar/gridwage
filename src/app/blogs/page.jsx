@@ -1,26 +1,13 @@
 "use client";
 
+import Link from "next/link";
 import DirectionWrapper from "../DirectionWrapper";
-
-const featuredPosts = [
-  {
-    title: "Global payroll trends to watch in 2025",
-    excerpt:
-      "From instant payouts to AI-assisted compliance checks, here is what finance leaders are prioritising this year.",
-  },
-  {
-    title: "How to launch in 5 new markets without local entities",
-    excerpt:
-      "A practical checklist for people teams that want to experiment in new countries without long legal lead times.",
-  },
-  {
-    title: "Managing bilingual teams with confidence",
-    excerpt:
-      "Tips for keeping documentation, onboarding, and cultural rituals inclusive across English, Arabic, and Spanish speakers.",
-  },
-];
+import { useLang } from "../i18n/LanguageContext";
+import blogs from "./data/blogs";
 
 export default function BlogsPage() {
+  const { lang } = useLang();
+
   return (
     <DirectionWrapper>
       <main className="pt-[8vw] pb-[6vw] px-[4vw] md:px-[12vw] bg-white min-h-screen">
@@ -33,26 +20,37 @@ export default function BlogsPage() {
               People ops insights
             </h1>
             <p className="text-lg text-gray-600">
-              Full articles are coming soon. Until then, here is a preview of
-              the topics we are preparing for the blog.
+              Explore our collection of articles covering global payroll, team management, and HR best practices.
             </p>
           </div>
 
-          <div className="grid gap-6 md:grid-cols-3">
-            {featuredPosts.map((post) => (
-              <article
-                key={post.title}
-                className="border rounded-2xl p-6 flex flex-col gap-4 bg-gray-50/60"
-                style={{ borderColor: "#ece7ff" }}
+          <div className="space-y-4">
+            {blogs.map((blog) => (
+              <Link
+                key={blog.slug}
+                href={`/blogs/${blog.slug}`}
+                className="block"
               >
-                <h2 className="text-xl font-semibold">{post.title}</h2>
-                <p className="text-gray-600 text-base leading-relaxed">
-                  {post.excerpt}
-                </p>
-                <span className="text-[#7b46ff] font-medium text-sm uppercase tracking-wide">
-                  Coming soon
-                </span>
-              </article>
+                <article
+                  className="border rounded-2xl p-6 flex flex-col gap-4 bg-gray-50/60 hover:bg-gray-100 transition-colors cursor-pointer"
+                  style={{ borderColor: "#ece7ff" }}
+                >
+                  <h2 className="text-xl font-semibold">
+                    {blog.title[lang] || blog.title.en}
+                  </h2>
+                  <p className="text-gray-600 text-base leading-relaxed">
+                    {blog.excerpt[lang] || blog.excerpt.en}
+                  </p>
+                  <div className="flex justify-between items-center">
+                    <span className="text-[#7b46ff] font-medium text-sm uppercase tracking-wide">
+                      Read more
+                    </span>
+                    <span className="text-gray-500 text-sm">
+                      {blog.date[lang] || blog.date.en}
+                    </span>
+                  </div>
+                </article>
+              </Link>
             ))}
           </div>
         </section>
@@ -60,4 +58,3 @@ export default function BlogsPage() {
     </DirectionWrapper>
   );
 }
-

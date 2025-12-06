@@ -46,23 +46,20 @@ export default function Navbar() {
       title: "Employer of Record",
       desc: "Hire full-time employees globally without entities.",
       href: "/product/eor",
-      icon: "👔",
-      span: "col-span-3",
+      span: "col-span-4",
     },
     {
       id: "payroll",
       title: "Global Payroll",
       desc: "Automated payroll in 80+ countries with compliance.",
       href: "/product/payroll",
-      icon: "💸",
-      span: "col-span-5",
+      span: "col-span-4",
     },
     {
       id: "comp",
       title: "Compliance Suite",
       desc: "Local labour law & tax compliance made simple.",
       href: "/product/compliance",
-      icon: "🛡️",
       span: "col-span-4",
     },
   ];
@@ -72,24 +69,21 @@ export default function Navbar() {
       id: "hiring",
       title: "Global Hiring",
       desc: "Hire globally with compliant local contracts.",
-      href: "/solution/hiring",
-      icon: "🌍",
-      span: "col-span-3",
+        href: "/solution/global-hiring",
+      span: "col-span-4",
     },
     {
       id: "contractor",
       title: "Contractor Management",
       desc: "Onboard, manage, and pay contractors globally.",
-      href: "/solution/contractors",
-      icon: "🧾",
-      span: "col-span-5",
+        href: "/solution/contractor-management",
+      span: "col-span-4",
     },
     {
       id: "relocation",
       title: "Employee Relocation",
       desc: "Seamless international employee mobility.",
-      href: "/solution/relocation",
-      icon: "🚚",
+        href: "/solution/employee-relocation",
       span: "col-span-4",
     },
   ];
@@ -403,7 +397,7 @@ export default function Navbar() {
 
   return (
     <>
-      <header className="fixed top-0 left-0 z-50 w-full bg-white">
+      <header className="fixed top-0 left-0 z-50 w-full">
         <div
           ref={headerRef}
           className="grid items-center grid-cols-12 px-[3vw] py-[1.3vw]"
@@ -434,9 +428,9 @@ export default function Navbar() {
                 label={t?.nav_products ?? "Products"}
                 isRTL={isRTL}
                 open={openMenu === "products"}
-                onClick={() =>
-                  setOpenMenu(openMenu === "products" ? null : "products")
-                }
+                onOpen={() => setOpenMenu("products")}
+                onClose={() => setOpenMenu(null)}
+                onItemClick={() => setOpenMenu(null)}
                 ref={productsRef}
                 items={products}
               />
@@ -447,9 +441,9 @@ export default function Navbar() {
                 label={t?.nav_solutions ?? "Solutions"}
                 isRTL={isRTL}
                 open={openMenu === "solutions"}
-                onClick={() =>
-                  setOpenMenu(openMenu === "solutions" ? null : "solutions")
-                }
+                onOpen={() => setOpenMenu("solutions")}
+                onClose={() => setOpenMenu(null)}
+                onItemClick={() => setOpenMenu(null)}
                 ref={solutionsRef}
                 items={solutions}
               />
@@ -595,6 +589,7 @@ export default function Navbar() {
             toggle={() =>
               setMobileDropdown((p) => (p === "products" ? null : "products"))
             }
+            closeMenu={() => setMobileOpen(false)}
             animateAccordion={(ref, open) => {
               if (!ref) return;
               if (open) {
@@ -638,6 +633,7 @@ export default function Navbar() {
             toggle={() =>
               setMobileDropdown((p) => (p === "solutions" ? null : "solutions"))
             }
+            closeMenu={() => setMobileOpen(false)}
             animateAccordion={(ref, open) => {
               if (!ref) return;
               if (open) {
@@ -780,13 +776,43 @@ export default function Navbar() {
 }
 
 const DesktopMega = forwardRef(function DesktopMega(
-  { label, isRTL, open, onClick, items },
+  { label, isRTL, open, onOpen, onClose, items, onItemClick },
   ref
 ) {
+  // Track mouse over dropdown or button
+  const mouseInDropdown = useRef(false);
+  const mouseInButton = useRef(false);
+
+  const handleMouseEnter = () => {
+    mouseInButton.current = true;
+    onOpen?.();
+  };
+  const handleMouseLeave = () => {
+    mouseInButton.current = false;
+    setTimeout(() => {
+      if (!mouseInDropdown.current && !mouseInButton.current) {
+        onClose?.();
+      }
+    }, 100);
+  };
+  const handleDropdownEnter = () => {
+    mouseInDropdown.current = true;
+  };
+  const handleDropdownLeave = () => {
+    mouseInDropdown.current = false;
+    setTimeout(() => {
+      if (!mouseInDropdown.current && !mouseInButton.current) {
+        onClose?.();
+      }
+    }, 100);
+  };
+
   return (
     <div className="relative inline-block">
       <button
-        onClick={onClick}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+        onClick={open ? onClose : onOpen}
         className="flex items-center gap-[0.6vw] text-[1.05vw]"
       >
         {label}
@@ -803,13 +829,15 @@ const DesktopMega = forwardRef(function DesktopMega(
         ref={ref}
         className="absolute bg-white shadow-xl rounded-xl p-[1.4vw]"
         style={{
-          display: "none",
+          display: open ? "block" : "none",
           top: "3vw",
           minWidth: "40vw",
           left: isRTL ? "auto" : 0,
           right: isRTL ? 0 : "auto",
           zIndex: 2000,
         }}
+        onMouseEnter={handleDropdownEnter}
+        onMouseLeave={handleDropdownLeave}
       >
         <div className="grid grid-cols-12 gap-[1.2vw]">
           {items.map((item) => (
@@ -817,13 +845,9 @@ const DesktopMega = forwardRef(function DesktopMega(
               key={item.id}
               href={item.href}
               className={`${item.span} block p-[1vw] rounded-lg hover:bg-gray-50 gw-dropdown-item`}
+              onClick={onItemClick}
             >
               <div className="flex gap-[1vw]">
-                <div
-                  className="w-[3vw] h-[3vw] flex items-center justify-center rounded-[0.7vw] bg-[#f2f2ff] text-[2.3vw]"
-                >
-                  {item.icon}
-                </div>
                 <div>
                   <div className="text-[1.05vw] font-semibold">
                     {item.title}
@@ -849,12 +873,21 @@ function MobileAccordion({
   animateAccordion,
   isLang = false,
   isActive = false,
+  closeMenu,
 }) {
   const contentRef = useRef(null);
 
   useEffect(() => {
     animateAccordion?.(contentRef.current, open);
   }, [open, animateAccordion]);
+
+  const handleItemClick = (action) => {
+    if (action) action();
+    toggle?.();
+    setTimeout(() => {
+      closeMenu?.();
+    }, 300);
+  };
 
   return (
     <div>
@@ -881,11 +914,11 @@ function MobileAccordion({
         <div className="mt-[3vw] ml-[4vw] flex flex-col gap-[4vw]">
           {items.map((it) =>
             isLang ? (
-              <button key={it.key} onClick={it.action} className="text-[4.2vw]">
+              <button key={it.key} onClick={() => handleItemClick(it.action)} className="text-[4.2vw]">
                 {it.label}
               </button>
             ) : (
-              <Link key={it.id} href={it.href} className="text-[4.2vw]">
+              <Link key={it.id} href={it.href} onClick={() => handleItemClick()} className="text-[4.2vw]">
                 {it.title}
               </Link>
             )
